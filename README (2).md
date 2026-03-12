@@ -1,10 +1,10 @@
-# 🌤 Aplicación del Tiempo
+#  Aplicación del Tiempo
 
 Aplicación web desarrollada en PHP puro siguiendo el patrón de arquitectura **MVC**. Permite consultar el tiempo atmosférico de cualquier ciudad del mundo usando la API de OpenWeatherMap de forma rápida.
 
 ---
 
-## 📋 Funcionalidades
+##  Funcionalidades
 
 - Búsqueda de ciudades por nombre
 - Tiempo actual
@@ -16,7 +16,7 @@ Aplicación web desarrollada en PHP puro siguiendo el patrón de arquitectura **
 
 ---
 
-## 🏗 Arquitectura MVC
+##  Arquitectura MVC
 
 El proyecto sigue el patrón Modelo-Vista-Controlador:
 
@@ -28,7 +28,7 @@ El proyecto sigue el patrón Modelo-Vista-Controlador:
 
 ---
 
-## 📁 Estructura de archivos
+##  Estructura de archivos
 
 ```
 Aplicacion_del_Tiempo_MVC/
@@ -60,14 +60,14 @@ Aplicacion_del_Tiempo_MVC/
 
 ---
 
-## ⚙️ Requisitos previos
+##  Requisitos previos
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado y en ejecución
 - Cuenta gratuita en [openweathermap.org](https://openweathermap.org/api) para obtener una API Key
 
 ---
 
-## 🔧 Configuración
+##  Configuración
 
 ### API Key
 
@@ -96,7 +96,7 @@ environment:
 
 ---
 
-## 🚀 Instalación y ejecución local
+##  Instalación y ejecución local
 
 ### Arrancar la aplicación
 
@@ -134,7 +134,7 @@ docker exec -it aplicacion_del_tiempo_mvc-db-1 mariadb -u antonio -pantonio appt
 
 ---
 
-## 🗄 Base de datos
+##  Base de datos
 
 ### Tabla `consultas`
 
@@ -160,7 +160,7 @@ CREATE TABLE IF NOT EXISTS consultas (
 
 ---
 
-## 🌐 API de OpenWeatherMap
+##  API de OpenWeatherMap
 
 ### Endpoints utilizados
 
@@ -172,7 +172,7 @@ CREATE TABLE IF NOT EXISTS consultas (
 
 ---
 
-## 🐳 Docker
+##  Docker
 
 ### Servicios
 
@@ -201,7 +201,7 @@ Los cambios en los archivos PHP se ven de forma automática sin necesidad de rei
 
 ---
 
-## ☁️ Despliegue en AWS
+##  Despliegue en AWS
 
 ### 1. Crear la instancia EC2
 
@@ -271,34 +271,6 @@ docker-compose up -d --build
 
 ---
 
-## 📦 Subir a GitHub
-
-### 1. Crear .gitignore
-
-Crea un `.gitignore` en la raíz del proyecto:
-
-```
-.env
-.DS_Store
-Thumbs.db
-```
-
-> ⚠️ **Importante:** No subas tu API Key real. Antes de hacer commit pon un valor de ejemplo en `config.php`:
-> ```php
-> define('API_KEY', 'TU_API_KEY_AQUI');
-> ```
-
-### 2. Subir el código
-
-```bash
-git init
-git add .
-git commit -m "Aplicacion del tiempo MVC con Docker"
-git remote add origin https://github.com/antoniocm8/aplicacion-del-tiempo.git
-git push -u origin main
-```
-
----
 
 ## 📌 Resumen de comandos útiles
 
@@ -314,18 +286,4 @@ git push -u origin main
 
 ---
 
-## ✅ Estado del proyecto
 
-| Criterio | Estado |
-|----------|--------|
-| Búsqueda por ciudad | ✅ Completado |
-| Tiempo actual | ✅ Completado |
-| Previsión por horas | ✅ Completado |
-| Previsión semanal | ✅ Completado |
-| Gráficas con Chart.js | ✅ Completado |
-| Base de datos MariaDB | ✅ Completado |
-| Patrón DAO | ✅ Completado |
-| Arquitectura MVC | ✅ Completado |
-| Docker | ✅ Completado |
-| Subida a AWS | ✅ Completado |
-| Subida a GitHub | ✅ Completado |
