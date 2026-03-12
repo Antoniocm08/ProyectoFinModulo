@@ -1,4 +1,4 @@
-#  Aplicación del Tiempo
+#  Api del Tiempo
 
 Aplicación web desarrollada en PHP puro siguiendo el patrón de arquitectura **MVC**. Permite consultar el tiempo atmosférico de cualquier ciudad del mundo usando la API de OpenWeatherMap de forma rápida.
 
@@ -253,13 +253,7 @@ cd aplicacion-del-tiempo
 docker-compose up -d --build
 ```
 
-### 6. Acceder a la aplicación
-
-```
-http://52.21.211.88
-```
-
-### 7. Actualizar la aplicación en AWS
+### 6. Actualizar la aplicación en AWS
 
 Cuando hagas cambios en el código, súbelos a GitHub desde tu PC y luego en EC2:
 
@@ -270,9 +264,9 @@ docker-compose up -d --build
 ```
 
 ---
-### 8. Dominio utilizado
+### 7. Dominio utilizado y ip elastica utilizada
 http://antoniotiempo.ddns.net/
-
+http://52.21.211.88/
 ## 📌 Resumen de comandos útiles
 
 | Comando | Descripción |
