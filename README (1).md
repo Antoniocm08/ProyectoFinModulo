@@ -204,80 +204,53 @@ Los cambios en los archivos PHP se ven de forma automatica sin necesidad de rein
 
 ##  Despliegue en AWS
 
-### 1. Preparar la imagen Docker
+### 1. Crear la instancia EC2
 
-Necesitas una cuenta en [hub.docker.com](https://hub.docker.com). Construye y sube la imagen desde tu PC:
+1. Accede a **EC2 > Instancias > Lanzar instancia**
+2. Elige Debian 
+3. Tipo de instancia: **t2.micro**
+4. Crea o selecciona un par de claves `.pem` para conectarte por SSH
+5. En **Configuración de red**: permite el tráfico SSH (22) y HTTP (80)
+6. Lanza la instancia
 
-```bash
-# Construir la imagen
- docker-compose up -d --build
- sudo apt install -y git docker.io docker-compose
-sudo usermod -aG docker $USER
-# Iniciar sesión en Docker Hub
-docker login
-
-# Subir la imagen
-docker push tuusuario/weatherapp:latest
-```
-
-### 2. Crear la instancia EC2
-
-1. Ve a [console.aws.amazon.com](https://console.aws.amazon.com)
-2. Accede a **EC2 > Instancias > Lanzar instancia**
-3. Elige **Amazon Linux 2023** (capa gratuita)
-4. Tipo de instancia: **t2.micro** (capa gratuita)
-5. Crea o selecciona un par de claves `.pem` para conectarte por SSH
-6. En **Configuración de red**: permite el tráfico SSH (22) y HTTP (80)
-7. Lanza la instancia
-
-### 3. Conectarse a la instancia
+### 2. Conectarse a la instancia
 
 ```bash
 ssh -i tu-clave.pem ec2-user@IP_PUBLICA_DE_TU_EC2
 ```
 
-### 4. Instalar Docker en EC2
+### 3. Instalar Docker en EC2
 
 ```bash
+# Instalacion y actualizacion de paquetes de docker
+ sudo apt install -y git docker.io docker-compose
+ sudo usermod -aG docker $USER
+# Contruir dentro del EC2
+ docker-compose up -d --build
 # Actualizar paquetes
-sudo yum update -y
-
-# Instalar Docker
-sudo yum install docker -y
-
-# Iniciar Docker y habilitarlo al arranque
-sudo systemctl start docker
-sudo systemctl enable docker
-
-# Añadir tu usuario al grupo docker
-sudo usermod -aG docker ec2-user
-
-# Instalar Docker Compose
-sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-
-# Cerrar sesión y volver a entrar para aplicar el grupo
-exit
+ sudo apt update -y
 ```
-
-### 5. Preparar el docker-compose.yml para AWS
-
-Crea un `docker-compose.yml` para producción. La diferencia con el local es que usa `image:` en vez de `build:`:
+### 4. Preparar el docker-compose.yml para AWS
 
 ```yaml
 version: '3.8'
 services:
+ # Servicio PHP con Apache 
   php:
-    image: tuusuario/weatherapp:latest
+    build: .
     ports:
-      - "80:80"
+      - "80:80"           # Puerto 80 del PC apunta al puerto 80 del contenedor
     depends_on:
-      - db
+      - db                # Espera a que la base de datos esté lista
     environment:
       DB_HOST: db
       DB_NAME: apptiempo
       DB_USER: antonio
       DB_PASS: antonio
+    volumes:
+      - .:/var/www/html   # Los cambios en el código se ven al instante
+
+  # Servicio MariaDB (base de datos)
   db:
     image: mariadb:10.11
     restart: always
@@ -287,12 +260,15 @@ services:
       MYSQL_USER: antonio
       MYSQL_PASSWORD: antonio
     volumes:
-      - datos_db:/var/lib/mysql
+      - datos_db:/var/lib/mysql   # Los datos persisten aunque pares el contenedor
+
+# Volumen para guardar los datos de la base de datos
 volumes:
   datos_db:
+
 ```
 
-### 6. Subir el docker-compose.yml a EC2
+### 5. Subir el docker-compose.yml a EC2
 
 Desde tu PC:
 
@@ -300,14 +276,14 @@ Desde tu PC:
 scp -i tu-clave.pem docker-compose.yml ec2-user@IP_PUBLICA:/home/ec2-user/docker-compose.yml
 ```
 
-### 7. Arrancar la aplicación en EC2
+### 6. Arrancar la aplicación en EC2
 
 ```bash
 ssh -i tu-clave.pem ec2-user@IP_PUBLICA
 docker-compose up -d
 ```
 
-### 8. Abrir el puerto 80 en el Security Group
+### 7. Abrir el puerto 80 en el Security Group
 
 1. Ve a **EC2 > Instancias** y selecciona tu instancia
 2. En la pestaña **Seguridad**, haz clic en el Security Group
@@ -315,60 +291,19 @@ docker-compose up -d
 4. Tipo: `HTTP`, Puerto: `80`, Origen: `0.0.0.0/0`
 5. Guardar reglas
 
-### 9. Acceder a la aplicación
+### 8. Acceder a la aplicación
 
 ```
 http://IP_PUBLICA_DE_TU_EC2
 ```
 
-### 10. Actualizar la aplicación en AWS
+### 9. Actualizar la aplicación en AWS
 
 ```bash
-# En tu PC: reconstruir y subir la imagen
-docker build -t tuusuario/weatherapp:latest .
-docker push tuusuario/weatherapp:latest
 
 # En EC2: descargar la nueva imagen y reiniciar
 docker-compose pull
 docker-compose up -d
-```
-
----
-
-## 📦 Subir a GitHub
-
-### 1. Crear .gitignore
-
-Antes de subir el código, crea un `.gitignore` en la raíz:
-
-```
-.env
-.DS_Store
-Thumbs.db
-```
-
-> ⚠️ **Importante:** No subas tu API Key real. Antes de hacer commit, pon un valor de ejemplo en `config.php`:
-> ```php
-> define('API_KEY', 'TU_API_KEY_AQUI');
-> ```
-
-### 2. Subir el código
-
-```bash
-# Inicializar el repositorio local
-git init
-
-# Añadir todos los archivos
-git add .
-
-# Primer commit
-git commit -m "Aplicacion del tiempo MVC con Docker"
-
-# Conectar con GitHub
-git remote add origin https://github.com/tuusuario/aplicacion-del-tiempo.git
-
-# Subir
-git push -u origin main
 ```
 
 ---
@@ -388,18 +323,4 @@ git push -u origin main
 
 ---
 
-## ✅ Estado del proyecto
 
-| Criterio | Estado |
-|----------|--------|
-| Búsqueda por ciudad | ✅ Completado |
-| Tiempo actual | ✅ Completado |
-| Previsión por horas | ✅ Completado |
-| Previsión semanal | ✅ Completado |
-| Gráficas con Chart.js | ✅ Completado |
-| Base de datos MariaDB | ✅ Completado |
-| Patrón DAO | ✅ Completado |
-| Arquitectura MVC | ✅ Completado |
-| Docker | ✅ Completado |
-| Subida a AWS | ⏳ Pendiente |
-| Subida a GitHub | ⏳ Pendiente |
