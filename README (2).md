@@ -237,7 +237,7 @@ exit
 Vuelve a conectarte:
 
 ```bash
-ssh -i labsuser.pem admin@44.195.1.106
+ssh -i labsuser.pem admin@52.21.211.88
 ```
 
 ### 4. Clonar el repositorio en EC2
@@ -256,7 +256,7 @@ docker-compose up -d --build
 ### 6. Acceder a la aplicación
 
 ```
-http://44.195.1.106
+http://52.21.211.88
 ```
 
 ### 7. Actualizar la aplicación en AWS
