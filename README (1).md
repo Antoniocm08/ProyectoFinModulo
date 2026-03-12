@@ -1,49 +1,47 @@
-# 🌤 Aplicación del Tiempo
+#  Aplicación del Tiempo
 
-Aplicación web desarrollada en PHP puro siguiendo el patrón de arquitectura **MVC** (Model-View-Controller). Permite consultar el tiempo atmosférico de cualquier ciudad del mundo usando la API de OpenWeatherMap.
+La aplicación web esta desarrollada en PHP puro siguiendo el patrón de arquitectura **MVC** . Permite consultar el tiempo atmosférico de cualquier ciudad del mundo usando la API de OpenWeatherMap de forma rapida.
 
 ---
 
-## 📋 Funcionalidades
+##  Funcionalidades
 
-- Búsqueda de ciudades por nombre con geocodificación
-- Tiempo actual (temperatura, viento, humedad, presión, visibilidad...)
-- Previsión por horas (próximas 24h)
-- Previsión semanal (5 días con máximas, mínimas y lluvia)
+- Búsqueda de ciudades por nombre.
+- Tiempo actual.
+- Previsión por horas.
+- Previsión semanal.
 - Gráficas interactivas con Chart.js
-- Historial de consultas guardado en base de datos MariaDB
-- Patrón DAO para el acceso a datos
+- Historial de consultas guardado en base de datos.
+- Utilizacion del DAO para el acceso a datos
 
 ---
 
-## 🏗 Arquitectura MVC
+##  Arquitectura MVC
 
-El proyecto sigue el patrón Modelo-Vista-Controlador de forma sencilla:
+El proyecto sigue el patrón Modelo-Vista-Controlador:
 
 | Capa | Carpeta | Responsabilidad |
 |------|---------|-----------------|
-| **Model** | `models/` | Acceso a la base de datos (patrón DAO) |
-| **View** | `views/` | HTML que ve el usuario, sin lógica de negocio |
+| **Model** | `models/` | Acceso a la base de datos |
+| **View** | `views/` | HTML que ve el usuario |
 | **Controller** | `controllers/` | Une Model y View, llama a la API y prepara los datos |
-
-Los archivos de la raíz (`acceso-*.php`) son los **puntos de entrada** que recibe el navegador. Cada uno instancia su Controller correspondiente y lo ejecuta.
 
 ---
 
-## 📁 Estructura de archivos
+## Estructura de archivos
 
 ```
 Aplicacion_del_Tiempo_MVC/
-  ├── index.php                          ← entrada: buscador
-  ├── acceso-tiempo-ahora.php            ← entrada: tiempo actual
-  ├── acceso-prevision-horas.php         ← entrada: previsión horas
-  ├── acceso-prevision-semanal.php       ← entrada: previsión semanal
-  ├── acceso-consultas-realizadas.php    ← entrada: historial
-  ├── config.php                         ← API key y constantes
-  ├── Dockerfile
-  ├── docker-compose.yml
+  ├── index.php                          ← Es la página principal de la aplicación.                           
+  ├── acceso-tiempo-ahora.php            ← Archivo que muestra el tiempo actual de la ciudad buscada.
+  ├── acceso-prevision-horas.php         ← Página que muestra la previsión del tiempo por horas
+  ├── acceso-prevision-semanal.php       ← Muestra la previsión del tiempo para los próximos días
+  ├── acceso-consultas-realizadas.php    ← Página donde se muestra el historial de búsquedas realizadas.
+  ├── config.php                         ← API key y configuracion
+  ├── Dockerfile                         ← Archivo que define cómo se construye el contenedor de la aplicación.
+  ├── docker-compose.yml                 ← Archivo que permite ejecutar toda la aplicación con Docker.
   ├── controllers/
-  │     ├── BuscadorController.php
+  │     ├── BuscadorController.php        ← Procesa la búsqueda de ciudades y dirige a las diferentes páginas de resultados. 
   │     ├── ActualController.php
   │     ├── HorasController.php
   │     ├── SemanaController.php
@@ -62,15 +60,15 @@ Aplicacion_del_Tiempo_MVC/
 
 ---
 
-## ⚙️ Requisitos previos
+##  Requisitos previos
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado y en ejecución
 - Cuenta gratuita en [openweathermap.org](https://openweathermap.org/api) para obtener una API Key
-- Conexión a internet (la app llama a la API en tiempo real)
+
 
 ---
 
-## 🔧 Configuración
+##  Configuración
 
 ### API Key
 
@@ -95,11 +93,11 @@ environment:
   DB_PASS: antonio
 ```
 
-> La tabla `consultas` se crea automáticamente al arrancar la aplicación. No es necesario ejecutar ningún SQL manualmente.
+> La tabla consultas se crea automáticamente al arrancar la aplicación. 
 
 ---
 
-## 🚀 Instalación y ejecución local
+##  Instalación y ejecución local
 
 ### Arrancar la aplicación
 
@@ -107,7 +105,7 @@ environment:
 docker compose up -d
 ```
 
-La primera vez descargará las imágenes de PHP y MariaDB, lo que puede tardar unos minutos.
+La primera vez descargará las imágenes de PHP y MariaDB, lo que puede tardar un poco.
 
 ### Acceder a la aplicación
 
@@ -129,23 +127,17 @@ Necesario si cambias las credenciales de la BD:
 docker compose down -v
 ```
 
-### Ver logs en tiempo real
-
-```bash
-docker compose logs -f php
-```
-
 ### Entrar a la base de datos
 
 ```bash
-docker exec -it aplicacion_del_tiempo_mvc-db-1 mariadb -u antonio -pantonio apptiempo
+docker exec -it proyectofinmodulo-db-1 mariadb -u antonio -pantonio apptiempo
 ```
 
 ---
 
-## 🗄 Base de datos
+##  Base de datos
 
-### Tabla `consultas`
+### Tabla consultas
 
 ```sql
 CREATE TABLE IF NOT EXISTS consultas (
@@ -169,25 +161,19 @@ CREATE TABLE IF NOT EXISTS consultas (
 
 ---
 
-## 🌐 API de OpenWeatherMap
+##  API de OpenWeatherMap
 
 ### Endpoints utilizados
 
 | Endpoint | Uso |
 |----------|-----|
-| `geo/1.0/direct` | Buscar ciudades por nombre (geocodificación) |
+| `geo/1.0/direct` | Buscar ciudades por nombre|
 | `data/2.5/weather` | Obtener tiempo actual |
 | `data/2.5/forecast` | Obtener previsión por horas y semanal |
 
-### Plan gratuito
-
-- 60 llamadas por minuto
-- Previsión máxima de 5 días
-- Actualización cada 10 minutos
-
 ---
 
-## 🐳 Docker
+##  Docker
 
 ### Servicios
 
@@ -212,11 +198,11 @@ volumes:
   - .:/var/www/html
 ```
 
-Los cambios en los archivos PHP se reflejan inmediatamente sin necesidad de reiniciar Docker.
+Los cambios en los archivos PHP se ven de forma automatica sin necesidad de reiniciar Docker.
 
 ---
 
-## ☁️ Despliegue en AWS
+##  Despliegue en AWS
 
 ### 1. Preparar la imagen Docker
 
@@ -224,8 +210,9 @@ Necesitas una cuenta en [hub.docker.com](https://hub.docker.com). Construye y su
 
 ```bash
 # Construir la imagen
-docker build -t tuusuario/weatherapp:latest .
-
+ docker-compose up -d --build
+ sudo apt install -y git docker.io docker-compose
+sudo usermod -aG docker $USER
 # Iniciar sesión en Docker Hub
 docker login
 
