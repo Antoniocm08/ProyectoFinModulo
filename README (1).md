@@ -77,7 +77,7 @@ Aplicacion_del_Tiempo_MVC/
 Abre `config.php` y sustituye el valor por tu clave personal:
 
 ```php
-define('API_KEY', 'TU_API_KEY_AQUI');
+define('API_KEY', '174d6d0647e10b03d7fad11527e974d3');
 define('API_BASE', 'https://api.openweathermap.org/data/2.5/');
 define('UNIDADES', 'metric');
 define('IDIOMA',   'es');
