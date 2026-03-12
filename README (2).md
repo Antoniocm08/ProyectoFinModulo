@@ -42,10 +42,10 @@ Aplicacion_del_Tiempo_MVC/
   ├── docker-compose.yml                 ← Permite ejecutar toda la aplicación con Docker
   ├── controllers/
   │     ├── BuscadorController.php       ← Procesa la búsqueda de ciudades
-  │     ├── ActualController.php
-  │     ├── HorasController.php
-  │     ├── SemanaController.php
-  │     └── HistorialController.php
+  │     ├── ActualController.php         ← Procesa la hora actual
+  │     ├── HorasController.php          ← Procesa las proximas horas
+  │     ├── SemanaController.php         ← Procesa el tiempo semanal
+  │     └── HistorialController.php      ← Procesa el historial de busqueda
   ├── models/
   │     └── ConsultaModel.php
   ├── views/
