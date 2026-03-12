@@ -215,7 +215,7 @@ Los cambios en los archivos PHP se ven de forma automática sin necesidad de rei
 ### 2. Conectarse a la instancia
 
 ```bash
-ssh -i labsuser.pem admin@44.195.1.106
+ssh -i labsuser.pem admin@52.21.211.88
 ```
 
 ### 3. Instalar Docker y Git en EC2
