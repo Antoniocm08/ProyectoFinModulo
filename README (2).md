@@ -271,7 +271,7 @@ docker-compose up -d --build
 
 ---
 ### 8. Dominio utilizado
-antoniotiempo.ddns.net
+http://antoniotiempo.ddns.net/
 
 ## 📌 Resumen de comandos útiles
 
