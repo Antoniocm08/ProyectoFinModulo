@@ -5,6 +5,7 @@ services:
   # Servicio PHP con Apache 
   php:
     build: .
+    restart: always
     ports:
       - "80:80"           # Puerto 80 del PC apunta al puerto 80 del contenedor
     depends_on:
